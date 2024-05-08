@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+    <h1>รายการสินค้าที่เลือกซื้อ</h1>
+    <ul>
+        {% for product in selected_products %}
+        <li>
+            <h2>{{ product.name }}</h2>
+            <p>จำนวนที่เลือกซื้อ: {{ 1 }}</p>
+            <p>ราคา: {{ product.price }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add a form for user information and payment -->
+    <form method="post" action="{% url 'order_confirmation' %}">
+        {% csrf_token %}
+        <!-- เพิ่ม input type="hidden" เพื่อส่งจำนวนสินค้าที่เลือกซื้อ -->
+        {% for product in selected_products %}
+        <input type="hidden" name="selected_quantities" value="{{ product.id }}|{{ product.qty }}">
+        {% endfor %}
+        <button type="submit">ยืนยันการสั่งซื้อ</button>
+    </form>
+
+    <!-- ส่วนของการสรุปราคารวม -->
+    <div class="total">
+        <p>ราคารวมทั้งหมด: {{ total_price }}</p>
+    </div>
+</div>
+
+</body>
+</html>

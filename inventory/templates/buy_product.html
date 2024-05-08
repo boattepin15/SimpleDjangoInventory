@@ -1,0 +1,55 @@
+<!-- buy_product.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .product {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .product h2 {
+            margin-top: 0;
+        }
+        .product p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>รายการสินค้า</h1>
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            {% for product in products %}
+            <div class="product">
+                <input type="checkbox" id="product_{{ product.id }}" name="selected_products" value="{{ product.id }}">
+                <label for="product_{{ product.id }}">
+                    <h2>{{ product.name }}</h2>
+                    <p>จำนวนที่เหลือ: {{ product.qty }}</p>
+                    <p>ราคา: {{ product.price }}</p>
+                    <input type="number" name="product_{{ product.id }}_qty" value="1" min="1" max="{{ product.qty }}">
+                </label>
+            </div>
+            {% endfor %}
+            <button type="submit">สั่งซื้อสินค้าที่เลือก</button>
+        </form>
+    </div>
+</body>
+</html>
